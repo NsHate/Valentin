@@ -93,31 +93,31 @@
     <div class="container">
         <p class="question">Любишь ли ты его? 💖</p>
         <div class="answers">
-            <button onclick="showNext('q1', 'q2')">Да</button>
-            <button onclick="showNext('q1', 'q2')">Нет</button>
-            <button id="specialAnswer" class="hidden" onclick="showNext('q1', 'q2')">Конечно, люблю моего заю!</button>
+            <button onclick="showNext('q1', 'q2')" ontouchstart="showNext('q1', 'q2')">Да</button>
+            <button onclick="showNext('q1', 'q2')" ontouchstart="showNext('q1', 'q2')">Нет</button>
+            <button id="specialAnswer" class="hidden" onclick="showNext('q1', 'q2')" ontouchstart="showNext('q1', 'q2')">Конечно, люблю моего заю!</button>
         </div>
 
         <div id="q2" class="hidden">
             <p class="question">А готов(а) ты пойти с ним хоть на край света? 🌍</p>
             <div class="answers">
-                <button onclick="showNext('q2', 'q3')">Без сомнений!</button>
-                <button onclick="showNext('q2', 'q3')">Ну... только если там тепло</button>
+                <button onclick="showNext('q2', 'q3')" ontouchstart="showNext('q2', 'q3')">Без сомнений!</button>
+                <button onclick="showNext('q2', 'q3')" ontouchstart="showNext('q2', 'q3')">Ну... только если там тепло</button>
             </div>
         </div>
 
         <div id="q3" class="hidden">
             <p class="question">А если он подарит тебе 1000 роз? 🌹</p>
             <div class="answers">
-                <button onclick="showNext('q3', 'q4')">Я растаю! 💞</button>
-                <button onclick="showNext('q3', 'q4')">Главное, чтобы он был рядом 💑</button>
+                <button onclick="showNext('q3', 'q4')" ontouchstart="showNext('q3', 'q4')">Я растаю! 💞</button>
+                <button onclick="showNext('q3', 'q4')" ontouchstart="showNext('q3', 'q4')">Главное, чтобы он был рядом 💑</button>
             </div>
         </div>
 
         <div id="q4" class="hidden">
             <p class="question">Ну что, готов(а) узнать результат? 😍</p>
             <div class="answers">
-                <button onclick="showLoading()">Да, конечно!</button>
+                <button onclick="showLoading()" ontouchstart="showLoading()">Да, конечно!</button>
             </div>
         </div>
 
