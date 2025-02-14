@@ -14,7 +14,6 @@
             margin: 0;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            overflow: hidden; /* Предотвращает прокрутку, если анимация выходит за пределы */
         }
 
         .container {
@@ -94,31 +93,31 @@
     <div class="container">
         <p class="question">Любишь ли ты его? 💖</p>
         <div class="answers">
-            <button onclick="showNext('q1', 'q2')">Да</button>
-            <button onclick="showNext('q1', 'q2')">Нет</button>
-            <button id="specialAnswer" class="hidden" onclick="showNext('q1', 'q2')">Конечно, люблю моего заю!</button>
+            <button id="btnYes">Да</button>
+            <button id="btnNo">Нет</button>
+            <button id="specialAnswer" class="hidden">Конечно, люблю моего заю!</button>
         </div>
 
         <div id="q2" class="hidden">
             <p class="question">А готов(а) ты пойти с ним хоть на край света? 🌍</p>
             <div class="answers">
-                <button onclick="showNext('q2', 'q3')">Без сомнений!</button>
-                <button onclick="showNext('q2', 'q3')">Ну... только если там тепло</button>
+                <button id="btnYes2">Без сомнений!</button>
+                <button id="btnNo2">Ну... только если там тепло</button>
             </div>
         </div>
 
         <div id="q3" class="hidden">
             <p class="question">А если он подарит тебе 1000 роз? 🌹</p>
             <div class="answers">
-                <button onclick="showNext('q3', 'q4')">Я растаю! 💞</button>
-                <button onclick="showNext('q3', 'q4')">Главное, чтобы он был рядом 💑</button>
+                <button id="btnYes3">Я растаю! 💞</button>
+                <button id="btnNo3">Главное, чтобы он был рядом 💑</button>
             </div>
         </div>
 
         <div id="q4" class="hidden">
             <p class="question">Ну что, готов(а) узнать результат? 😍</p>
             <div class="answers">
-                <button onclick="showLoading()">Да, конечно!</button>
+                <button id="btnShowResult">Да, конечно!</button>
             </div>
         </div>
 
@@ -131,14 +130,43 @@
     </div>
 
     <script>
+        document.getElementById("btnYes").addEventListener("click", function() {
+            showNext('q1', 'q2');
+            document.getElementById("specialAnswer").classList.remove("hidden");
+        });
+
+        document.getElementById("btnNo").addEventListener("click", function() {
+            showNext('q1', 'q2');
+            document.getElementById("specialAnswer").classList.remove("hidden");
+        });
+
+        document.getElementById("specialAnswer").addEventListener("click", function() {
+            showNext('q1', 'q2');
+        });
+
+        document.getElementById("btnYes2").addEventListener("click", function() {
+            showNext('q2', 'q3');
+        });
+
+        document.getElementById("btnNo2").addEventListener("click", function() {
+            showNext('q2', 'q3');
+        });
+
+        document.getElementById("btnYes3").addEventListener("click", function() {
+            showNext('q3', 'q4');
+        });
+
+        document.getElementById("btnNo3").addEventListener("click", function() {
+            showNext('q3', 'q4');
+        });
+
+        document.getElementById("btnShowResult").addEventListener("click", function() {
+            showLoading();
+        });
+
         function showNext(current, next) {
             document.getElementById(current).classList.add("hidden");
             document.getElementById(next).classList.remove("hidden");
-
-            // Открываем "Конечно, люблю моего заю!" после ответа "Да" или "Нет"
-            if (current === 'q1') {
-                document.getElementById("specialAnswer").classList.remove("hidden");
-            }
         }
 
         function showLoading() {
