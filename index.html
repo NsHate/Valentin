@@ -46,7 +46,7 @@
             font-size: 18px;
             border-radius: 20px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: transform 0.4s ease-in-out;
             position: relative;
         }
 
@@ -125,10 +125,8 @@
             </div>
         </div>
 
-        <p id="loading" class="loading hidden">
-            Анализируем вашу любовь... ⏳
-            <span class="loading-bar">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</span>
-        </p>
+        <p id="loading" class="loading hidden">Анализируем вашу любовь... ⏳</p>
+        <div id="loadingBar" class="loading-bar hidden">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</div>
 
         <div id="final" class="hidden">
             <p class="question">💖 У вас любовная любовь! 💖</p>
@@ -136,63 +134,44 @@
     </div>
 
     <script>
-        let escapeAttempts = 0;
-        const btnYes = document.getElementById("btnYes");
-        const btnNo = document.getElementById("btnNo");
+        let moveCount = 0;
 
-        btnYes.addEventListener("mouseover", function() {
-            if (escapeAttempts < 5) { // Убегает 5 раз
-                btnYes.style.position = "absolute";
-                btnYes.style.top = Math.random() * 80 + "vh";
-                btnYes.style.left = Math.random() * 80 + "vw";
-                escapeAttempts++;
+        document.getElementById("btnYes").addEventListener("click", function () {
+            if (moveCount < 5) {
+                let x = (Math.random() * 100 - 50) + "px";
+                let y = (Math.random() * 100 - 50) + "px";
+                this.style.transform = `translate(${x}, ${y})`;
+                moveCount++;
+            } else {
+                document.getElementById("answers1").classList.add("hidden");
+                document.getElementById("q2").classList.remove("hidden");
             }
         });
 
-        btnYes.addEventListener("click", function() {
-            if (escapeAttempts >= 5) {
-                showNext('q1', 'answers1', 'q2');
-                document.getElementById("specialAnswer").classList.remove("hidden");
-            }
+        document.getElementById("btnNo").addEventListener("click", function () {
+            this.classList.add("hidden");
         });
 
-        btnNo.addEventListener("click", function() {
-            btnNo.classList.add("hidden");
-        });
+        document.getElementById("btnShowResult").addEventListener("click", function () {
+            document.getElementById("q5").classList.add("hidden");
+            document.getElementById("loading").classList.remove("hidden");
+            document.getElementById("loadingBar").classList.remove("hidden");
 
-        document.getElementById("specialAnswer").addEventListener("click", function() {
-            showNext('q1', 'answers1', 'q2');
+            setTimeout(function () {
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("loadingBar").classList.add("hidden");
+                document.getElementById("final").classList.remove("hidden");
+            }, 3000);
         });
 
         document.querySelectorAll(".next").forEach(button => {
-            button.addEventListener("click", function() {
-                let currentDiv = this.closest(".answers");
-                let nextQuestion = this.getAttribute("data-next");
-
-                currentDiv.parentElement.classList.add("hidden");
-                document.getElementById(nextQuestion).classList.remove("hidden");
+            button.addEventListener("click", function () {
+                let current = this.closest("div");
+                let nextId = this.dataset.next;
+                current.classList.add("hidden");
+                document.getElementById(nextId).classList.remove("hidden");
             });
         });
-
-        document.getElementById("btnShowResult").addEventListener("click", function() {
-            showLoading();
-        });
-
-        function showNext(currentQuestion, currentAnswers, nextQuestion) {
-            document.getElementById(currentQuestion).classList.add("hidden");
-            document.getElementById(currentAnswers).classList.add("hidden");
-            document.getElementById(nextQuestion).classList.remove("hidden");
-        }
-
-        function showLoading() {
-            document.getElementById("q5").classList.add("hidden");
-            document.getElementById("loading").classList.remove("hidden");
-
-            setTimeout(function() {
-                document.getElementById("loading").classList.add("hidden");
-                document.getElementById("final").classList.remove("hidden");
-            }, 3000);
-        }
     </script>
 </body>
 </html>
