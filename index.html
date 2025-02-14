@@ -130,6 +130,56 @@
     </div>
 
     <script>
+        // Функция для переключения между вопросами
+        function showNext(current, next) {
+            const currentElement = document.getElementById(current);
+            const nextElement = document.getElementById(next);
+            
+            if (currentElement && nextElement) {
+                currentElement.classList.add("hidden");
+                nextElement.classList.remove("hidden");
+            }
+        }
+
+        // Функция для загрузки результата
+        function showLoading() {
+            document.getElementById("q4").classList.add("hidden");
+            document.getElementById("loading").classList.remove("hidden");
+
+            setTimeout(function() {
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("final").classList.remove("hidden");
+                startFireworks();
+            }, 2000);
+        }
+
+        // Функция для начала фейерверков
+        function startFireworks() {
+            const fireworks = document.querySelector(".fireworks");
+            fireworks.style.display = "block";
+
+            for (let i = 0; i < 15; i++) {
+                createHeart();
+            }
+        }
+
+        // Функция для создания сердца
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            heart.style.animationDuration = (Math.random() * 2 + 1) + "s";
+
+            setTimeout(() => {
+                heart.remove();
+            }, 2000);
+        }
+
+        // Обработчики событий для кнопок
         document.getElementById("btnYes").addEventListener("click", function() {
             showNext('q1', 'q2');
             document.getElementById("specialAnswer").classList.remove("hidden");
@@ -164,45 +214,6 @@
             showLoading();
         });
 
-        function showNext(current, next) {
-            document.getElementById(current).classList.add("hidden");
-            document.getElementById(next).classList.remove("hidden");
-        }
-
-        function showLoading() {
-            document.getElementById("q4").classList.add("hidden");
-            document.getElementById("loading").classList.remove("hidden");
-
-            setTimeout(function() {
-                document.getElementById("loading").classList.add("hidden");
-                document.getElementById("final").classList.remove("hidden");
-                startFireworks();
-            }, 2000);
-        }
-
-        function startFireworks() {
-            const fireworks = document.querySelector(".fireworks");
-            fireworks.style.display = "block";
-
-            for (let i = 0; i < 15; i++) {
-                createHeart();
-            }
-        }
-
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤️";
-            heart.classList.add("heart");
-            document.body.appendChild(heart);
-
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = "100vh";
-            heart.style.animationDuration = (Math.random() * 2 + 1) + "s";
-
-            setTimeout(() => {
-                heart.remove();
-            }, 2000);
-        }
     </script>
 </body>
 </html>
