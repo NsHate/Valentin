@@ -66,10 +66,15 @@
 
         .loading-bar {
             display: flex;
-            overflow: hidden;
             white-space: nowrap;
             font-size: 30px;
             color: red;
+            overflow: hidden;
+            visibility: hidden;
+        }
+
+        .loading-bar span {
+            display: inline-block;
             animation: loadHearts 3s linear infinite;
         }
 
@@ -126,7 +131,9 @@
         </div>
 
         <p id="loading" class="loading hidden">Анализируем вашу любовь... ⏳</p>
-        <div id="loadingBar" class="loading-bar hidden">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</div>
+        <div id="loadingBar" class="loading-bar">
+            <span>❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</span>
+        </div>
 
         <div id="final" class="hidden">
             <p class="question">💖 У вас любовная любовь! 💖</p>
@@ -138,8 +145,8 @@
 
         document.getElementById("btnYes").addEventListener("click", function () {
             if (moveCount < 5) {
-                let x = (Math.random() * 100 - 50) + "px";
-                let y = (Math.random() * 100 - 50) + "px";
+                let x = (Math.random() * 50 - 25) + "px";
+                let y = (Math.random() * 50 - 25) + "px";
                 this.style.transform = `translate(${x}, ${y})`;
                 moveCount++;
             } else {
@@ -155,11 +162,14 @@
         document.getElementById("btnShowResult").addEventListener("click", function () {
             document.getElementById("q5").classList.add("hidden");
             document.getElementById("loading").classList.remove("hidden");
-            document.getElementById("loadingBar").classList.remove("hidden");
+
+            // Показываем анимацию сердечек
+            let loadingBar = document.getElementById("loadingBar");
+            loadingBar.style.visibility = "visible";
 
             setTimeout(function () {
                 document.getElementById("loading").classList.add("hidden");
-                document.getElementById("loadingBar").classList.add("hidden");
+                loadingBar.style.visibility = "hidden";
                 document.getElementById("final").classList.remove("hidden");
             }, 3000);
         });
