@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Валентинка для тебя ❤️</title>
+    <title>Опросник про любовь 💖</title>
     <style>
         body {
             display: flex;
@@ -20,145 +20,160 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            max-width: 90%;
         }
 
-        .heart {
-            width: 100px;
-            height: 100px;
-            background-color: red;
-            position: relative;
-            transform: rotate(-45deg);
-            animation: heartbeat 1s infinite alternate;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .heart::before,
-        .heart::after {
-            content: "";
-            width: 100px;
-            height: 100px;
-            background-color: red;
-            border-radius: 50%;
-            position: absolute;
-        }
-
-        .heart::before {
-            top: -50px;
-            left: 0;
-        }
-
-        .heart::after {
-            left: 50px;
-            top: 0;
-        }
-
-        @keyframes heartbeat {
-            0% {
-                transform: scale(1) rotate(-45deg);
-            }
-            100% {
-                transform: scale(1.2) rotate(-45deg);
-            }
-        }
-
-        .heart-text {
-            position: absolute;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            transform: rotate(45deg);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-
-        .message {
-            font-size: 20px;
+        .question {
+            font-size: 22px;
             color: #d63384;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
-        input {
-            width: 200px;
-            padding: 8px;
-            margin: 10px;
-            border: 2px solid #ff4d6d;
-            border-radius: 10px;
-            font-size: 16px;
-            text-align: center;
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         button {
             background-color: #ff4d6d;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 20px;
+            font-size: 18px;
             border-radius: 20px;
-            margin-top: 20px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
             background-color: #ff1a4d;
         }
 
-        #result {
-            font-size: 20px;
-            font-weight: bold;
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            font-size: 22px;
             color: #d63384;
             margin-top: 20px;
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 30px;
+            animation: float 1.5s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.5);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="heart">
-            <span class="heart-text">М + Н</span>
+        <p class="question">Любишь ли ты его? 💖</p>
+        <div class="answers">
+            <button onclick="showNext('q1', 'q2')">Да</button>
+            <button onclick="showNext('q1', 'q2')">Нет</button>
+            <button id="specialAnswer" class="hidden" onclick="showNext('q1', 'q2')">Конечно, люблю моего заю!</button>
         </div>
-        <p class="message">Проверим вашу совместимость? 💖</p>
-        
-        <input type="text" id="name1" placeholder="Твоё имя">
-        <input type="text" id="name2" placeholder="Имя партнёра">
-        <button id="checkCompatibility">Проверить</button>
-        
-        <p id="result"></p>
+
+        <div id="q2" class="hidden">
+            <p class="question">А готов(а) ты пойти с ним хоть на край света? 🌍</p>
+            <div class="answers">
+                <button onclick="showNext('q2', 'q3')">Без сомнений!</button>
+                <button onclick="showNext('q2', 'q3')">Ну... только если там тепло</button>
+            </div>
+        </div>
+
+        <div id="q3" class="hidden">
+            <p class="question">А если он подарит тебе 1000 роз? 🌹</p>
+            <div class="answers">
+                <button onclick="showNext('q3', 'q4')">Я растаю! 💞</button>
+                <button onclick="showNext('q3', 'q4')">Главное, чтобы он был рядом 💑</button>
+            </div>
+        </div>
+
+        <div id="q4" class="hidden">
+            <p class="question">Ну что, готов(а) узнать результат? 😍</p>
+            <div class="answers">
+                <button onclick="showLoading()">Да, конечно!</button>
+            </div>
+        </div>
+
+        <p id="loading" class="loading hidden">Анализируем вашу любовь... ⏳</p>
+
+        <div id="final" class="hidden">
+            <p class="question">💖 У вас любовная любовь! 💖</p>
+            <div class="fireworks"></div>
+        </div>
     </div>
 
     <script>
-        document.getElementById("checkCompatibility").addEventListener("click", function() {
-            let name1 = document.getElementById("name1").value.trim().toLowerCase();
-            let name2 = document.getElementById("name2").value.trim().toLowerCase();
+        function showNext(current, next) {
+            document.getElementById(current).classList.add("hidden");
+            document.getElementById(next).classList.remove("hidden");
 
-            if (name1 === "" || name2 === "") {
-                document.getElementById("result").innerText = "Введите оба имени!";
-                return;
+            // Открываем "Конечно, люблю моего заю!" после ответа "Да" или "Нет"
+            if (current === 'q1') {
+                document.getElementById("specialAnswer").classList.remove("hidden");
             }
+        }
 
-            // Варианты имени "Маша"
-            let mashaVariations = ["маша", "мария", "машенька", "машуня", "марюша", "марийка"];
-            
-            // Показываем сообщение о загрузке
-            document.getElementById("result").innerText = "Проверяем совместимость... ⏳";
+        function showLoading() {
+            document.getElementById("q4").classList.add("hidden");
+            document.getElementById("loading").classList.remove("hidden");
 
-            // Имитация загрузки (1,5 секунды)
             setTimeout(function() {
-                // Проверка на особую пару "Маша" и "Никита"
-                if ((mashaVariations.includes(name1) && name2 === "никита") || (mashaVariations.includes(name2) && name1 === "никита")) {
-                    document.getElementById("result").innerText = `Совместимость ${name1.charAt(0).toUpperCase() + name1.slice(1)} и ${name2.charAt(0).toUpperCase() + name2.slice(1)}: 100% 💞 Вы идеально подходите друг другу!`;
-                    return;
-                }
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("final").classList.remove("hidden");
+                startFireworks();
+            }, 2000);
+        }
 
-                // Генерация случайного процента совместимости
-                let compatibility = Math.floor((name1.length + name2.length + Math.random() * 50) % 101);
-                
-                let message = `Совместимость ${name1.charAt(0).toUpperCase() + name1.slice(1)} и ${name2.charAt(0).toUpperCase() + name2.slice(1)}: ${compatibility}% ❤️`;
+        function startFireworks() {
+            const fireworks = document.querySelector(".fireworks");
+            fireworks.style.display = "block";
 
-                document.getElementById("result").innerText = message;
-            }, 1500); // 1,5 секунды ожидания перед результатом
-        });
+            for (let i = 0; i < 15; i++) {
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.innerHTML = "❤️";
+            heart.classList.add("heart");
+            document.body.appendChild(heart);
+
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            heart.style.animationDuration = (Math.random() * 2 + 1) + "s";
+
+            setTimeout(() => {
+                heart.remove();
+            }, 2000);
+        }
     </script>
 </body>
 </html>
