@@ -91,7 +91,7 @@
 </head>
 <body>
     <div class="container">
-        <p class="question">Любишь ли ты его? 💖</p>
+        <p class="question" id="q1">Любишь ли ты его? 💖</p>
         <div class="answers">
             <button id="btnYes">Да</button>
             <button id="btnNo">Нет</button>
@@ -130,15 +130,10 @@
     </div>
 
     <script>
-        // Функция для переключения между вопросами
+        // Переключение между вопросами
         function showNext(current, next) {
-            const currentElement = document.getElementById(current);
-            const nextElement = document.getElementById(next);
-            
-            if (currentElement && nextElement) {
-                currentElement.classList.add("hidden");
-                nextElement.classList.remove("hidden");
-            }
+            document.getElementById(current).classList.add("hidden");
+            document.getElementById(next).classList.remove("hidden");
         }
 
         // Функция для загрузки результата
@@ -153,7 +148,7 @@
             }, 2000);
         }
 
-        // Функция для начала фейерверков
+        // Запуск фейерверков
         function startFireworks() {
             const fireworks = document.querySelector(".fireworks");
             fireworks.style.display = "block";
@@ -163,7 +158,7 @@
             }
         }
 
-        // Функция для создания сердца
+        // Создание сердечка для фейерверка
         function createHeart() {
             const heart = document.createElement("div");
             heart.innerHTML = "❤️";
@@ -213,7 +208,6 @@
         document.getElementById("btnShowResult").addEventListener("click", function() {
             showLoading();
         });
-
     </script>
 </body>
 </html>
