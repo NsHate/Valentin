@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Опросник про любовь 💖</title>
+    <title>Анализ любви Маши и Никиты 💖</title>
     <style>
         body {
             display: flex;
@@ -91,7 +91,7 @@
 
         <div id="q2" class="hidden">
             <p class="question">А готов(а) ты пойти с ним хоть на край света? 🌍</p>
-            <div class="answers" id="answers2">
+            <div class="answers">
                 <button class="next" data-next="q3">Без сомнений!</button>
                 <button class="next" data-next="q3">Ну... только если там тепло</button>
             </div>
@@ -99,7 +99,7 @@
 
         <div id="q3" class="hidden">
             <p class="question">А если он подарит тебе 1000 роз? 🌹</p>
-            <div class="answers" id="answers3">
+            <div class="answers">
                 <button class="next" data-next="q4">Я растаю! 💞</button>
                 <button class="next" data-next="q4">Главное, чтобы он был рядом 💑</button>
             </div>
@@ -107,7 +107,7 @@
 
         <div id="q4" class="hidden">
             <p class="question">Вы поехали на его родину в Мурманск и он застрял в сугробе, твои действия? ❄️</p>
-            <div class="answers" id="answers4">
+            <div class="answers">
                 <button class="next" data-next="q5">Буду плакать 😭</button>
                 <button class="next" data-next="q5">Не удивлена, этот таракан сам выберется 🐛</button>
                 <button class="next" data-next="q5">Буду рыть до победного, чтобы дать пиздюлей 💪</button>
@@ -117,7 +117,7 @@
 
         <div id="q5" class="hidden">
             <p class="question">Ну что, готов(а) узнать результат? 😍</p>
-            <div class="answers" id="answers5">
+            <div class="answers">
                 <button id="btnShowResult">Да, конечно!</button>
             </div>
         </div>
@@ -135,6 +135,7 @@
     <script>
         let escapeAttempts = 0;
         const btnYes = document.getElementById("btnYes");
+        const btnNo = document.getElementById("btnNo");
 
         btnYes.addEventListener("mouseover", function() {
             if (escapeAttempts < Math.floor(Math.random() * 3) + 3) { // 3-5 попыток
@@ -152,9 +153,8 @@
             }
         });
 
-        document.getElementById("btnNo").addEventListener("click", function() {
-            showNext('q1', 'answers1', 'q2');
-            document.getElementById("specialAnswer").classList.remove("hidden");
+        btnNo.addEventListener("click", function() {
+            btnNo.classList.add("hidden");
         });
 
         document.getElementById("specialAnswer").addEventListener("click", function() {
@@ -166,7 +166,7 @@
                 let currentDiv = this.closest(".answers");
                 let nextQuestion = this.getAttribute("data-next");
 
-                currentDiv.classList.add("hidden");
+                currentDiv.parentElement.classList.add("hidden");
                 document.getElementById(nextQuestion).classList.remove("hidden");
             });
         });
@@ -183,7 +183,6 @@
 
         function showLoading() {
             document.getElementById("q5").classList.add("hidden");
-            document.getElementById("answers5").classList.add("hidden");
             document.getElementById("loading").classList.remove("hidden");
 
             setTimeout(function() {
