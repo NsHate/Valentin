@@ -66,11 +66,11 @@
 
         .loading-bar {
             display: flex;
-            white-space: nowrap;
             font-size: 30px;
             color: red;
             overflow: hidden;
             visibility: hidden;
+            white-space: nowrap;
         }
 
         .loading-bar span {
@@ -90,43 +90,45 @@
 </head>
 <body>
     <div class="container">
-        <p class="question" id="q1">Любишь ли ты его? 💖</p>
-        <div class="answers" id="answers1">
-            <button id="btnYes">Да</button>
-            <button id="btnNo">Нет</button>
-            <button id="specialAnswer" class="hidden">Конечно, люблю моего заю!</button>
+        <div class="question-container" id="q1">
+            <p class="question">Любишь ли ты его? 💖</p>
+            <div class="answers">
+                <button id="btnYes">Да</button>
+                <button id="btnNo">Нет</button>
+                <button id="specialAnswer" class="hidden" onclick="nextQuestion('q1', 'q2')">Конечно, люблю моего заю!</button>
+            </div>
         </div>
 
-        <div id="q2" class="hidden">
+        <div class="question-container hidden" id="q2">
             <p class="question">А готов(а) ты пойти с ним хоть на край света? 🌍</p>
             <div class="answers">
-                <button class="next" data-next="q3">Без сомнений!</button>
-                <button class="next" data-next="q3">Ну... только если там тепло</button>
+                <button onclick="nextQuestion('q2', 'q3')">Без сомнений!</button>
+                <button onclick="nextQuestion('q2', 'q3')">Ну... только если там тепло</button>
             </div>
         </div>
 
-        <div id="q3" class="hidden">
+        <div class="question-container hidden" id="q3">
             <p class="question">А если он подарит тебе 1000 роз? 🌹</p>
             <div class="answers">
-                <button class="next" data-next="q4">Я растаю! 💞</button>
-                <button class="next" data-next="q4">Главное, чтобы он был рядом 💑</button>
+                <button onclick="nextQuestion('q3', 'q4')">Я растаю! 💞</button>
+                <button onclick="nextQuestion('q3', 'q4')">Главное, чтобы он был рядом 💑</button>
             </div>
         </div>
 
-        <div id="q4" class="hidden">
+        <div class="question-container hidden" id="q4">
             <p class="question">Вы поехали на его родину в Мурманск и он застрял в сугробе, твои действия? ❄️</p>
             <div class="answers">
-                <button class="next" data-next="q5">Буду плакать 😭</button>
-                <button class="next" data-next="q5">Не удивлена, этот таракан сам выберется 🐛</button>
-                <button class="next" data-next="q5">Буду рыть до победного, чтобы дать пиздюлей 💪</button>
-                <button class="next" data-next="q5">Буду плакать ещё сильней 😭😭</button>
+                <button onclick="nextQuestion('q4', 'q5')">Буду плакать 😭</button>
+                <button onclick="nextQuestion('q4', 'q5')">Не удивлена, этот таракан сам выберется 🐛</button>
+                <button onclick="nextQuestion('q4', 'q5')">Буду рыть до победного, чтобы дать пиздюлей 💪</button>
+                <button onclick="nextQuestion('q4', 'q5')">Буду плакать ещё сильней 😭😭</button>
             </div>
         </div>
 
-        <div id="q5" class="hidden">
+        <div class="question-container hidden" id="q5">
             <p class="question">Ну что, готов(а) узнать результат? 😍</p>
             <div class="answers">
-                <button id="btnShowResult">Да, конечно!</button>
+                <button onclick="showLoading()">Да, конечно!</button>
             </div>
         </div>
 
@@ -145,25 +147,28 @@
 
         document.getElementById("btnYes").addEventListener("click", function () {
             if (moveCount < 5) {
-                let x = (Math.random() * 50 - 25) + "px";
-                let y = (Math.random() * 50 - 25) + "px";
+                let x = (Math.random() * 30 - 15) + "px";
+                let y = (Math.random() * 30 - 15) + "px";
                 this.style.transform = `translate(${x}, ${y})`;
                 moveCount++;
             } else {
-                document.getElementById("answers1").classList.add("hidden");
-                document.getElementById("q2").classList.remove("hidden");
+                nextQuestion("q1", "q2");
             }
         });
 
         document.getElementById("btnNo").addEventListener("click", function () {
             this.classList.add("hidden");
+            document.getElementById("specialAnswer").classList.remove("hidden");
         });
 
-        document.getElementById("btnShowResult").addEventListener("click", function () {
-            document.getElementById("q5").classList.add("hidden");
-            document.getElementById("loading").classList.remove("hidden");
+        function nextQuestion(current, next) {
+            document.getElementById(current).classList.add("hidden");
+            document.getElementById(next).classList.remove("hidden");
+        }
 
-            // Показываем анимацию сердечек
+        function showLoading() {
+            nextQuestion("q5", "loading");
+
             let loadingBar = document.getElementById("loadingBar");
             loadingBar.style.visibility = "visible";
 
@@ -172,16 +177,7 @@
                 loadingBar.style.visibility = "hidden";
                 document.getElementById("final").classList.remove("hidden");
             }, 3000);
-        });
-
-        document.querySelectorAll(".next").forEach(button => {
-            button.addEventListener("click", function () {
-                let current = this.closest("div");
-                let nextId = this.dataset.next;
-                current.classList.add("hidden");
-                document.getElementById(nextId).classList.remove("hidden");
-            });
-        });
+        }
     </script>
 </body>
 </html>
