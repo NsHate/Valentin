@@ -86,11 +86,35 @@
                 transform: translateX(100%);
             }
         }
+
+        .intro {
+            font-size: 24px;
+            color: #ff4d6d;
+            margin-bottom: 20px;
+            animation: fadeOut 10s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="question-container" id="q1">
+        <div class="intro" id="intro">
+            <p>Тест на любовь Маши и Никиты 💖</p>
+        </div>
+
+        <div class="question-container hidden" id="q1">
             <p class="question">Любишь ли ты его? 💖</p>
             <div class="answers">
                 <button id="btnYes">Да</button>
@@ -143,6 +167,13 @@
     </div>
 
     <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById("intro").style.display = 'none';
+                document.getElementById("q1").classList.remove("hidden");
+            }, 10000); // 10 секунд
+        };
+
         let moveCount = 0;
 
         document.getElementById("btnYes").addEventListener("click", function () {
