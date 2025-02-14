@@ -29,6 +29,9 @@
             position: relative;
             transform: rotate(-45deg);
             animation: heartbeat 1s infinite alternate;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .heart::before,
@@ -58,6 +61,14 @@
             100% {
                 transform: scale(1.2) rotate(-45deg);
             }
+        }
+
+        .heart-text {
+            position: absolute;
+            transform: rotate(45deg);
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
         }
 
         .message {
@@ -101,7 +112,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="heart"></div>
+        <div class="heart">
+            <span class="heart-text">М + Н</span>
+        </div>
         <p class="message">Проверим вашу совместимость? 💖</p>
         
         <input type="text" id="name1" placeholder="Твоё имя">
@@ -124,18 +137,24 @@
             // Варианты имени "Маша"
             let mashaVariations = ["маша", "мария", "машенька", "машуня", "марюша", "марийка"];
             
-            // Проверка на особую пару "Маша" и "Никита"
-            if ((mashaVariations.includes(name1) && name2 === "никита") || (mashaVariations.includes(name2) && name1 === "никита")) {
-                document.getElementById("result").innerText = `Совместимость ${name1.charAt(0).toUpperCase() + name1.slice(1)} и ${name2.charAt(0).toUpperCase() + name2.slice(1)}: 100% 💞 Вы идеально подходите друг другу!`;
-                return;
-            }
+            // Показываем сообщение о загрузке
+            document.getElementById("result").innerText = "Проверяем совместимость... ⏳";
 
-            // Генерация случайного процента совместимости
-            let compatibility = Math.floor((name1.length + name2.length + Math.random() * 50) % 101);
-            
-            let message = `Совместимость ${name1.charAt(0).toUpperCase() + name1.slice(1)} и ${name2.charAt(0).toUpperCase() + name2.slice(1)}: ${compatibility}% ❤️`;
+            // Имитация загрузки (1,5 секунды)
+            setTimeout(function() {
+                // Проверка на особую пару "Маша" и "Никита"
+                if ((mashaVariations.includes(name1) && name2 === "никита") || (mashaVariations.includes(name2) && name1 === "никита")) {
+                    document.getElementById("result").innerText = `Совместимость ${name1.charAt(0).toUpperCase() + name1.slice(1)} и ${name2.charAt(0).toUpperCase() + name2.slice(1)}: 100% 💞 Вы идеально подходите друг другу!`;
+                    return;
+                }
 
-            document.getElementById("result").innerText = message;
+                // Генерация случайного процента совместимости
+                let compatibility = Math.floor((name1.length + name2.length + Math.random() * 50) % 101);
+                
+                let message = `Совместимость ${name1.charAt(0).toUpperCase() + name1.slice(1)} и ${name2.charAt(0).toUpperCase() + name2.slice(1)}: ${compatibility}% ❤️`;
+
+                document.getElementById("result").innerText = message;
+            }, 1500); // 1,5 секунды ожидания перед результатом
         });
     </script>
 </body>
