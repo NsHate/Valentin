@@ -44,6 +44,7 @@
             border-radius: 20px;
             cursor: pointer;
             transition: 0.3s;
+            position: relative;
         }
 
         button:hover {
@@ -60,31 +61,21 @@
             margin-top: 20px;
         }
 
-        .fireworks {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            display: none;
-        }
-
-        .heart {
-            position: absolute;
-            color: red;
+        .loading-bar {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
             font-size: 30px;
-            animation: float 1.5s linear infinite;
+            color: red;
+            animation: loadHearts 3s linear infinite;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
+        @keyframes loadHearts {
+            from {
+                transform: translateX(-100%);
             }
-            100% {
-                transform: translateY(-100px) scale(1.5);
-                opacity: 0;
+            to {
+                transform: translateX(100%);
             }
         }
     </style>
@@ -101,85 +92,64 @@
         <div id="q2" class="hidden">
             <p class="question">А готов(а) ты пойти с ним хоть на край света? 🌍</p>
             <div class="answers" id="answers2">
-                <button id="btnYes2">Без сомнений!</button>
-                <button id="btnNo2">Ну... только если там тепло</button>
+                <button class="next" data-next="q3">Без сомнений!</button>
+                <button class="next" data-next="q3">Ну... только если там тепло</button>
             </div>
         </div>
 
         <div id="q3" class="hidden">
             <p class="question">А если он подарит тебе 1000 роз? 🌹</p>
             <div class="answers" id="answers3">
-                <button id="btnYes3">Я растаю! 💞</button>
-                <button id="btnNo3">Главное, чтобы он был рядом 💑</button>
+                <button class="next" data-next="q4">Я растаю! 💞</button>
+                <button class="next" data-next="q4">Главное, чтобы он был рядом 💑</button>
             </div>
         </div>
 
         <div id="q4" class="hidden">
-            <p class="question">Ну что, готов(а) узнать результат? 😍</p>
+            <p class="question">Вы поехали на его родину в Мурманск и он застрял в сугробе, твои действия? ❄️</p>
             <div class="answers" id="answers4">
+                <button class="next" data-next="q5">Буду плакать 😭</button>
+                <button class="next" data-next="q5">Не удивлена, этот таракан сам выберется 🐛</button>
+                <button class="next" data-next="q5">Буду рыть до победного, чтобы дать пиздюлей 💪</button>
+                <button class="next" data-next="q5">Буду плакать ещё сильней 😭😭</button>
+            </div>
+        </div>
+
+        <div id="q5" class="hidden">
+            <p class="question">Ну что, готов(а) узнать результат? 😍</p>
+            <div class="answers" id="answers5">
                 <button id="btnShowResult">Да, конечно!</button>
             </div>
         </div>
 
-        <p id="loading" class="loading hidden">Анализируем вашу любовь... ⏳</p>
+        <p id="loading" class="loading hidden">
+            Анализируем вашу любовь... ⏳
+            <span class="loading-bar">❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️</span>
+        </p>
 
         <div id="final" class="hidden">
             <p class="question">💖 У вас любовная любовь! 💖</p>
-            <div class="fireworks"></div>
         </div>
     </div>
 
     <script>
-        // Функция для переключения вопросов и скрытия старых кнопок
-        function showNext(currentQuestion, currentAnswers, nextQuestion) {
-            document.getElementById(currentQuestion).classList.add("hidden");
-            document.getElementById(currentAnswers).classList.add("hidden");
-            document.getElementById(nextQuestion).classList.remove("hidden");
-        }
+        let escapeAttempts = 0;
+        const btnYes = document.getElementById("btnYes");
 
-        // Функция для загрузки результата
-        function showLoading() {
-            document.getElementById("q4").classList.add("hidden");
-            document.getElementById("answers4").classList.add("hidden");
-            document.getElementById("loading").classList.remove("hidden");
-
-            setTimeout(function() {
-                document.getElementById("loading").classList.add("hidden");
-                document.getElementById("final").classList.remove("hidden");
-                startFireworks();
-            }, 2000);
-        }
-
-        // Запуск фейерверков
-        function startFireworks() {
-            const fireworks = document.querySelector(".fireworks");
-            fireworks.style.display = "block";
-
-            for (let i = 0; i < 15; i++) {
-                createHeart();
+        btnYes.addEventListener("mouseover", function() {
+            if (escapeAttempts < Math.floor(Math.random() * 3) + 3) { // 3-5 попыток
+                btnYes.style.position = "absolute";
+                btnYes.style.top = Math.random() * 80 + "vh";
+                btnYes.style.left = Math.random() * 80 + "vw";
+                escapeAttempts++;
             }
-        }
+        });
 
-        // Создание сердечка для фейерверка
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤️";
-            heart.classList.add("heart");
-            document.body.appendChild(heart);
-
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = "100vh";
-            heart.style.animationDuration = (Math.random() * 2 + 1) + "s";
-
-            setTimeout(() => {
-                heart.remove();
-            }, 2000);
-        }
-
-        // Обработчики событий для кнопок
-        document.getElementById("btnYes").addEventListener("click", function() {
-            showNext('q1', 'answers1', 'q2');
-            document.getElementById("specialAnswer").classList.remove("hidden");
+        btnYes.addEventListener("click", function() {
+            if (escapeAttempts >= 3) {
+                showNext('q1', 'answers1', 'q2');
+                document.getElementById("specialAnswer").classList.remove("hidden");
+            }
         });
 
         document.getElementById("btnNo").addEventListener("click", function() {
@@ -191,25 +161,36 @@
             showNext('q1', 'answers1', 'q2');
         });
 
-        document.getElementById("btnYes2").addEventListener("click", function() {
-            showNext('q2', 'answers2', 'q3');
-        });
+        document.querySelectorAll(".next").forEach(button => {
+            button.addEventListener("click", function() {
+                let currentDiv = this.closest(".answers");
+                let nextQuestion = this.getAttribute("data-next");
 
-        document.getElementById("btnNo2").addEventListener("click", function() {
-            showNext('q2', 'answers2', 'q3');
-        });
-
-        document.getElementById("btnYes3").addEventListener("click", function() {
-            showNext('q3', 'answers3', 'q4');
-        });
-
-        document.getElementById("btnNo3").addEventListener("click", function() {
-            showNext('q3', 'answers3', 'q4');
+                currentDiv.classList.add("hidden");
+                document.getElementById(nextQuestion).classList.remove("hidden");
+            });
         });
 
         document.getElementById("btnShowResult").addEventListener("click", function() {
             showLoading();
         });
+
+        function showNext(currentQuestion, currentAnswers, nextQuestion) {
+            document.getElementById(currentQuestion).classList.add("hidden");
+            document.getElementById(currentAnswers).classList.add("hidden");
+            document.getElementById(nextQuestion).classList.remove("hidden");
+        }
+
+        function showLoading() {
+            document.getElementById("q5").classList.add("hidden");
+            document.getElementById("answers5").classList.add("hidden");
+            document.getElementById("loading").classList.remove("hidden");
+
+            setTimeout(function() {
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("final").classList.remove("hidden");
+            }, 3000);
+        }
     </script>
 </body>
 </html>
